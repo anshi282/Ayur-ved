@@ -1,0 +1,21 @@
+{
+  "name": "e-ayurvedic-health-assistant",
+  "version": "1.0.0",
+  "description": "E-Ayurvedic Health Assistant with React, Express, Firebase and Google Gemini Multimodal AI",
+  "scripts": {
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "start:server": "cd server && npm start",
+    "build:client": "cd client && npm run build"
+  },
+  "keywords": [
+    "ayurveda",
+    "gemini-ai",
+    "health-assistant",
+    "firebase",
+    "react",
+    "nodejs"
+  ],
+  "author": "",
+  "license": "ISC"
+}
