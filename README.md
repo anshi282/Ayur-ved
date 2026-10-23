@@ -6,95 +6,155 @@ Users can describe symptoms in free text or upload medical documents/photos (JPG
 
 ---
 
-## ✨ Features
+## ⚡ Quick Run (One-Click Launchers)
 
-- **Multimodal AI Analysis:** Gemini 2.x understands text symptoms and reads uploaded lab reports, prescriptions, or skin photos directly.
-- **Emergency Detection & Red Alert:** Instantly flags critical symptoms (chest pain, shortness of breath, severe bleeding, stroke signs) with high-priority hospital advice.
-- **Ayurvedic Guidance:** Delivers traditional herbs with their therapeutic benefits, Ahara (fruits & diet) suggestions, and Vihara (lifestyle/sleep/pranayama) routines.
-- **Privacy First:** Uploaded documents are deleted immediately from disk after AI inference. Only high-level metadata and structured insights are retained.
-- **Personal Consultation History:** Private history stored per user in Firebase Firestore with options to view past assessments or delete single/all records.
-- **Dual Mode (Ready-to-Run):** Works immediately with full intelligent simulation fallback for local development & demonstration, and switches seamlessly to live Firebase & Gemini when keys are added.
+### 🪟 Windows Users:
+Simply **Double-Click** on:
+```text
+start.bat
+```
+*(Ye script automatically dependencies check karegi, Backend aur Frontend dono start karegi, aur browser me `http://localhost:5173` open kar degi!)*
 
----
-
-## 🛠️ Technology Stack
-
-- **Frontend:** React 19, Vite, Lucide Icons, Modern Vanilla CSS Design System
-- **Backend:** Node.js, Express.js, Multer (file handling), Helmet, CORS, Express-Rate-Limit
-- **AI Intelligence:** Google Gemini API (`@google/generative-ai`)
-- **Authentication & Database:** Firebase Auth (Google Sign-In + Email/Password), Cloud Firestore
+### 🐧 Linux / macOS Users:
+Terminal me run karein:
+```bash
+./start.sh
+```
 
 ---
 
-## 🚀 Quick Start Guide
+## 🔑 Required APIs & Credentials (Kahan se lena hai aur kahan daalna hai)
 
-### 1. Start Backend Server
+Iss project me **2 main services** use hoti hain. Dono ko setup karne ka complete guide niche diya gaya hai:
+
+### 1️⃣ Google Gemini API Key (AI Intelligence ke liye) 🤖
+* **Purpose:** User ke symptoms ko samajhna, PDF/image lab reports ko analyze karna, aur Ayurvedic herbs, diet, lifestyle aur emergency flag generate karna.
+* **Kahan se lein (Free):**
+  1. [Google AI Studio](https://aistudio.google.com/) par jayein.
+  2. Apne Google account se login karein aur **"Get API key"** par click karke apni key generate karein.
+* **Kahan daalni hai:**
+  👉 File open karein: `server/.env`
+  ```env
+  PORT=5000
+  GEMINI_API_KEY=AIzaSyD-YourActualGeminiApiKeyHere
+  ```
+
+---
+
+### 2️⃣ Firebase Authentication & Firestore (User Login & History ke liye) 🔥
+
+Firebase setup do hisso me hota hai: Frontend (Client) aur Backend (Server).
+
+#### A. Frontend Config (Login & Google Sign-In)
+* **Kahan se lein:**
+  1. [Firebase Console](https://console.firebase.google.com/) me naya project create karein.
+  2. Left sidebar me **Authentication** enable karein (Google Provider + Email/Password).
+  3. **Project Settings** ➔ **General** ➔ Niche **"Your apps"** section me Web icon (`</>`) par click karke app register karein.
+  4. Wahan se credentials copy karein.
+* **Kahan daalni hai:**
+  👉 File create karein: `client/.env` *(aap `client/.env.example` ko copy karke `.env` rename kar sakte hain)*:
+  ```env
+  VITE_FIREBASE_API_KEY=AIzaSy...
+  VITE_FIREBASE_AUTH_DOMAIN=your-project-id.firebaseapp.com
+  VITE_FIREBASE_PROJECT_ID=your-project-id
+  VITE_FIREBASE_STORAGE_BUCKET=your-project-id.appspot.com
+  VITE_FIREBASE_MESSAGING_SENDER_ID=1029384756
+  VITE_FIREBASE_APP_ID=1:1029384756:web:abcd1234efgh
+  ```
+
+#### B. Backend Service Account (Database me History save karne ke liye)
+* **Kahan se lein:**
+  1. Firebase Console me **Project Settings** ➔ **Service accounts** tab par jayein.
+  2. **"Generate new private key"** button par click karein. Ek `.json` file download hogi.
+* **Kahan daalni hai:**
+  👉 Us downloaded `.json` file ka naam badal kar `serviceAccountKey.json` rakhein aur use is folder me paste kar dein:
+  ```text
+  server/config/serviceAccountKey.json
+  ```
+  Aur verify karein ki `server/.env` me ye line maujood ho:
+  ```env
+  FIREBASE_SERVICE_ACCOUNT_PATH=./config/serviceAccountKey.json
+  ```
+
+---
+
+## 💡 Bina API Keys ke Test Kaise Karein? (Demo Mode)
+
+> [!NOTE]
+> Agar aapke paas abhi API keys nahi hain, tab bhi aap project ko turant test kar sakte hain!
+> System me **Smart Simulation & 1-Click Demo Mode** integrated hai:
+> 1. App open karein (`http://localhost:5173`).
+> 2. Sign In page par **"Instant Preview Access (1-Click Demo)"** par click karein.
+> 3. AI aur History functions bina kisi key ke locally run honge!
+
+---
+
+## 🧪 Testing Scenarios
+
+1. **Normal Symptoms Test:**
+   - Symptoms box me likhein: `"Cold, dry cough, and mild throat irritation"`
+   - Result: Sitopaladi Churna, Mulethi, ginger warm water, lifestyle routine return hoga.
+2. **Emergency Red Alert Test:**
+   - Symptoms box me likhein: `"Severe chest pain and difficulty in breathing"`
+   - Result: Glowing Red Emergency Alert banner trigger hoga aur hospital ER triage suggest karega.
+3. **Medical Report Upload Test:**
+   - Drag & drop any JPG, PNG image or PDF lab report (<= 20MB). File analysis ke baad privacy protection ke liye server disk se turant auto-delete ho jayegi.
+4. **History Management Test:**
+   - Top navbar me **"My History"** par click karein. Previous records dekh sakte hain aur individual ya clear all delete kar sakte hain.
+
+---
+
+## 🛠️ Manual Terminal Commands
+
+Agar aap bina `.bat` / `.sh` script ke terminal se chalana chahein:
+
+### Terminal 1: Backend Server
 ```bash
 cd server
+npm install
 npm start
-# Server starts on http://localhost:5000
+# Server runs on: http://localhost:5000
+# Health check: http://localhost:5000/api/health
 ```
-Health check: `http://localhost:5000/api/health`
 
-### 2. Start Frontend App
+### Terminal 2: Frontend App
 ```bash
 cd client
+npm install
 npm run dev
-# Vite dev server runs on http://localhost:5173
+# Vite runs on: http://localhost:5173
 ```
 
 ---
 
-## 🔑 Environment Variables Setup
+## 📂 Project Architecture & File Map
 
-### Backend (`server/.env`)
-Create or edit `server/.env`:
-```env
-PORT=5000
-
-# Get your Gemini API Key from: https://aistudio.google.com/
-GEMINI_API_KEY=YOUR_GEMINI_API_KEY_HERE
-
-# Firebase Admin SDK (Optional for local demo mode, required for production Firestore)
-FIREBASE_SERVICE_ACCOUNT_PATH=./config/serviceAccountKey.json
-```
-
-### Frontend (`client/.env`)
-Create `client/.env` (optional, for connecting your live Firebase project):
-```env
-VITE_FIREBASE_API_KEY=your_firebase_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your-app.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your-project-id
-VITE_FIREBASE_STORAGE_BUCKET=your-app.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-```
-
----
-
-## 📂 Project Architecture
-
-```
+```text
 Ayur-ved/
-├── client/                     # React Frontend
+├── client/                     # React Frontend (Vite)
+│   ├── .env.example            # Frontend Firebase environment template
 │   ├── src/
 │   │   ├── components/         # Navbar, FormCard, ResultCard, EmergencyAlert, HistoryItem
-│   │   ├── context/            # AuthContext (Firebase + Demo mode)
+│   │   ├── context/            # AuthContext (Firebase Auth + 1-Click Demo)
 │   │   ├── pages/              # Home, Result, History, Login
-│   │   ├── services/           # API fetch and Firebase client
-│   │   ├── App.jsx             # Main router and layout
-│   │   └── index.css           # Ayurvedic Design System
+│   │   ├── services/           # Backend API connector
+│   │   ├── index.css           # Ayurvedic Design System (Forest Green + Amber)
+│   │   └── App.jsx             # Router layout
 │   └── vite.config.js
 │
-├── server/                     # Express REST Backend
-│   ├── config/                 # Firebase Admin & Gemini client config
+├── server/                     # Node.js + Express REST API
+│   ├── .env.example            # Backend environment template (Gemini & Firebase)
+│   ├── config/                 # Gemini Client & Firebase Admin configs
 │   ├── middleware/             # Auth token check, Multer file upload, Rate limiter
-│   ├── routes/                 # POST /api/analyze, /api/history CRUD
-│   ├── services/               # Gemini multimodal caller & prompt builder
-│   └── index.js                # Server entry point
+│   ├── routes/                 # /api/analyze, /api/history
+│   ├── services/               # Gemini Multimodal prompt builder & AI service
+│   ├── uploads/                # Temp upload directory (auto-deleted after analysis)
+│   └── index.js                # Express entry point
 │
+├── start.bat                   # 1-Click launcher for Windows
+├── start.sh                    # 1-Click launcher for Linux / Mac
 ├── E-Ayurvedic_System_Design.pdf # Original system design reference
-└── README.md
+└── README.md                   # Project documentation
 ```
 
 ---
