@@ -1,6 +1,6 @@
 # 🌿 E-Ayurvedic Health Assistant
 
-An AI-powered Ayurvedic wellness and lifestyle guidance web application designed according to the [E-Ayurvedic System Design Specification](file:///home/dell/Desktop/Ayur-ved/E-Ayurvedic_System_Design.pdf).
+An AI-powered Ayurvedic wellness and lifestyle guidance web application.
 
 Users can describe symptoms in free text or upload medical documents/photos (JPG, PNG, PDF) to receive instant Ayurvedic herb recommendations, dietary Ahara guidance, daily Dinacharya habits, and doctor triage, backed by **Google Gemini Multimodal AI** and **Firebase**.
 
@@ -153,7 +153,6 @@ Ayur-ved/
 │
 ├── start.bat                   # 1-Click launcher for Windows
 ├── start.sh                    # 1-Click launcher for Linux / Mac
-├── E-Ayurvedic_System_Design.pdf # Original system design reference
 └── README.md                   # Project documentation
 ```
 
